@@ -1,5 +1,5 @@
 export const REPORT_TYPES = [
-  'Machine Profit Report',
+  'Product Profit Report',
   'Expense Report',
   'Partnership Report',
   'Maintenance Report',

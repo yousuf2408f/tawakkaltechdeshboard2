@@ -97,7 +97,7 @@ export default function ReportsPage() {
       )
     }
 
-    if (reportType === 'Machine Profit Report') {
+    if (reportType === 'Product Profit Report') {
       return (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -105,7 +105,7 @@ export default function ReportsPage() {
               <tr className="border-b">
                 <th className="py-2 text-left">Product / Item</th>
                 <th className="py-2 text-right">Purchase Cost</th>
-                <th className="py-2 text-right">Machine Cost</th>
+                <th className="py-2 text-right">Operating Cost</th>
                 <th className="py-2 text-right">Selling Price</th>
                 <th className="py-2 text-right">Profit</th>
               </tr>
@@ -160,7 +160,7 @@ export default function ReportsPage() {
             <thead>
               <tr className="border-b">
                 <th className="py-2 text-left">Partnership</th>
-                <th className="py-2 text-left">Machine</th>
+                <th className="py-2 text-left">Product</th>
                 <th className="py-2 text-right">Investment</th>
                 <th className="py-2 text-right">Revenue</th>
                 <th className="py-2 text-right">Net Profit</th>

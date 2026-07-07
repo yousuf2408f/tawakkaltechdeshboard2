@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, Receipt, Truck, Calculator, TrendingUp, ShoppingCart, Warehouse,
   Handshake, Landmark, FileText, BarChart3, Bell, Users, ChevronDown,
-  X, PanelLeftClose, PanelLeft,
+  X, PanelLeftClose, PanelLeft, Settings,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { NAV_ITEMS } from '@/lib/constants/navigation'
@@ -15,7 +15,7 @@ import { BrandLogo } from '@/components/layout/brand-logo'
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   LayoutDashboard, Receipt, Truck, Calculator, TrendingUp, ShoppingCart, Warehouse,
-  Handshake, Landmark, FileText, BarChart3, Bell, Users,
+  Handshake, Landmark, FileText, BarChart3, Bell, Users, Settings,
 }
 
 interface SidebarProps {
@@ -71,7 +71,7 @@ export function Sidebar({ open, collapsed, onClose, onToggleCollapse }: SidebarP
                         onClick={() => setExpanded(isExpanded ? null : item.title)}
                         className={cn(
                           'flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-                          isActive ? 'bg-primary/15 text-primary shadow-[inset_0_0_20px_rgba(6,182,212,0.1)]' : 'hover:bg-sidebar-accent/50',
+                          isActive ? 'bg-primary/15 text-primary shadow-[inset_0_0_20px_rgba(249,115,22,0.12)]' : 'hover:bg-sidebar-accent/50',
                         )}
                       >
                         <span className="flex items-center gap-3">
@@ -108,7 +108,7 @@ export function Sidebar({ open, collapsed, onClose, onToggleCollapse }: SidebarP
                       title={collapsed ? item.title : undefined}
                       className={cn(
                         'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-                        isActive ? 'bg-primary/15 text-primary shadow-[inset_0_0_20px_rgba(6,182,212,0.1)]' : 'hover:bg-sidebar-accent/50',
+                        isActive ? 'bg-primary/15 text-primary shadow-[inset_0_0_20px_rgba(249,115,22,0.12)]' : 'hover:bg-sidebar-accent/50',
                         collapsed && 'justify-center px-2',
                       )}
                     >
@@ -124,7 +124,7 @@ export function Sidebar({ open, collapsed, onClose, onToggleCollapse }: SidebarP
 
         {!collapsed && (
           <div className="border-t p-4">
-            <p className="text-xs text-muted-foreground">Haya Enterprises ERP v1.0</p>
+            <p className="text-xs text-muted-foreground">TawakkalTech ERP v1.0</p>
           </div>
         )}
       </aside>

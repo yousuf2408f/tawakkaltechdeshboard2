@@ -239,7 +239,7 @@ export default function ExpenseCategoriesPage() {
                   id="category-label"
                   value={formLabel}
                   onChange={(e) => setFormLabel(e.target.value)}
-                  placeholder="e.g. Fuel Expenses"
+                  placeholder="e.g. Inventory Restock Expenses"
                   autoFocus
                 />
               </div>

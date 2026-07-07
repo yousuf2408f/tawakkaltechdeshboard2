@@ -26,7 +26,7 @@ export default function ChangePasswordPage() {
     setError('')
     setLoading(true)
     await new Promise((r) => setTimeout(r, 900))
-    const validPassword = 'hayaenterprise123'
+    const validPassword = 'tawakkaltech123'
     if (data.currentPassword !== validPassword) {
       setError('Current password is incorrect')
       setLoading(false)
@@ -41,7 +41,7 @@ export default function ChangePasswordPage() {
     <Card className="w-full max-w-md shadow-xl">
       <CardContent className="p-8">
         <div className="mb-6 flex flex-col items-center text-center">
-          <Image src="/logo.png" alt="Haya" width={140} height={42} className="mb-4 h-10 w-auto" />
+          <Image src="/logo.png" alt="TawakkalTech" width={140} height={42} className="mb-4 h-10 w-auto" />
           <h1 className="text-xl font-bold">Change Password</h1>
           <p className="mt-1 text-sm text-muted-foreground">Update your account password securely</p>
         </div>

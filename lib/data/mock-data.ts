@@ -136,7 +136,7 @@ export const mockMonthlyCashFlow: ChartDataPoint[] = [
 ]
 
 export const mockExpenseBreakdown: ChartDataPoint[] = [
-  { name: 'Fuel', value: 8500000 },
+  { name: 'Inventory Restock', value: 8500000 },
   { name: 'Maintenance', value: 5200000 },
   { name: 'Salaries', value: 6800000 },
   { name: 'Spare Parts', value: 3100000 },
@@ -163,14 +163,14 @@ export const mockMachineProfits: MachineProfit[] = [
 ]
 
 export const mockExpenses: Expense[] = [
-  { id: 'e1', category: 'FUEL', amount: 185000, date: '2026-03-01', description: 'Diesel refill - Site A fleet', machineId: 'm1' },
+  { id: 'e1', category: 'FUEL', amount: 185000, date: '2026-03-01', description: 'Phone inventory restock batch', machineId: 'm1' },
   { id: 'e2', category: 'MAINTENANCE', amount: 420000, date: '2026-03-02', description: 'Hydraulic pump replacement', machineId: 'm3' },
   { id: 'e3', category: 'STAFF_SALARIES', amount: 850000, date: '2026-03-01', description: 'March operator salaries' },
   { id: 'e4', category: 'SPARE_PARTS', amount: 95000, date: '2026-02-28', description: 'Track pads and filters', machineId: 'm2' },
-  { id: 'e5', category: 'TRANSPORTATION', amount: 65000, date: '2026-02-27', description: 'Machine relocation to Site B', machineId: 'm6' },
-  { id: 'e6', category: 'YARD', amount: 45000, date: '2026-02-26', description: 'Yard fencing repair' },
-  { id: 'e7', category: 'UTILITIES', amount: 28000, date: '2026-02-25', description: 'Electricity bill - Main Yard' },
-  { id: 'e8', category: 'FUEL', amount: 142000, date: '2026-02-24', description: 'Fuel for Komatsu D85', machineId: 'm2' },
+  { id: 'e5', category: 'TRANSPORTATION', amount: 65000, date: '2026-02-27', description: 'Delivery shipment to city outlet', machineId: 'm6' },
+  { id: 'e6', category: 'YARD', amount: 45000, date: '2026-02-26', description: 'Warehouse shelf repairs' },
+  { id: 'e7', category: 'UTILITIES', amount: 28000, date: '2026-02-25', description: 'Electricity bill - main store' },
+  { id: 'e8', category: 'FUEL', amount: 142000, date: '2026-02-24', description: 'Mobile accessories procurement', machineId: 'm2' },
 ]
 
 export const mockPartnerships: Partnership[] = [
@@ -184,7 +184,7 @@ export const mockPartnerships: Partnership[] = [
     netProfit: 6100000,
     partners: [
       { id: 'pt1', name: 'Ahmed Khan', ownershipPercentage: 60, investmentAmount: 14700000, expenseShare: 4860000, revenueShare: 8520000, netProfit: 3660000, outstandingPayment: 0 },
-      { id: 'pt2', name: 'Haya Enterprises', ownershipPercentage: 40, investmentAmount: 9800000, expenseShare: 3240000, revenueShare: 5680000, netProfit: 2440000, outstandingPayment: 150000 },
+      { id: 'pt2', name: 'TawakkalTech', ownershipPercentage: 40, investmentAmount: 9800000, expenseShare: 3240000, revenueShare: 5680000, netProfit: 2440000, outstandingPayment: 150000 },
     ],
   },
 ]
@@ -232,9 +232,9 @@ export function getMachineCostBreakdown(machineId: string): MachineCostBreakdown
 
 export const EXPENSE_CATEGORIES = [
   { key: 'GENERAL', label: 'General Expenses' },
-  { key: 'YARD', label: 'Yard Expenses' },
-  { key: 'MACHINERY', label: 'Machinery Expenses' },
-  { key: 'FUEL', label: 'Fuel Expenses' },
+  { key: 'YARD', label: 'Warehouse Expenses' },
+  { key: 'MACHINERY', label: 'Product Equipment Expenses' },
+  { key: 'FUEL', label: 'Inventory Restock Expenses' },
   { key: 'MAINTENANCE', label: 'Maintenance Expenses' },
   { key: 'STAFF_SALARIES', label: 'Staff Salaries' },
   { key: 'TRANSPORTATION', label: 'Transportation' },

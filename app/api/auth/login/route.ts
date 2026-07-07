@@ -6,8 +6,8 @@ export async function POST(request: Request) {
   const body = await request.json()
   const { username, password, rememberMe } = body
 
-  const validUsername = process.env.VITE_DEMO_USERNAME ?? process.env.DEMO_USERNAME ?? 'adminhayaenterprise'
-  const validPassword = process.env.VITE_DEMO_PASSWORD ?? process.env.DEMO_PASSWORD ?? 'hayaenterprise123'
+  const validUsername = process.env.VITE_DEMO_USERNAME ?? process.env.DEMO_USERNAME ?? 'admintawakkaltech'
+  const validPassword = process.env.VITE_DEMO_PASSWORD ?? process.env.DEMO_PASSWORD ?? 'tawakkaltech123'
 
   if (username !== validUsername || password !== validPassword) {
     return NextResponse.json({ error: 'Invalid Username or Password' }, { status: 401 })
@@ -25,8 +25,8 @@ export async function POST(request: Request) {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: rememberMe ? SESSION_DURATION * 4 : SESSION_DURATION,
     path: '/',
+    ...(rememberMe ? { maxAge: SESSION_DURATION * 4 } : {}),
   })
 
   return NextResponse.json({ success: true })

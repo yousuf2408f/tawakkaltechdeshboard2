@@ -38,9 +38,9 @@ export default function MachineDetailPage({ params }: { params: Promise<{ id: st
   if (!machine) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <p className="text-muted-foreground">Machine not found</p>
+        <p className="text-muted-foreground">Product not found</p>
         <Button className="mt-4" variant="outline" onClick={() => router.push('/machinery')}>
-          Back to Machinery
+          Back to Products
         </Button>
       </div>
     )
@@ -56,10 +56,10 @@ export default function MachineDetailPage({ params }: { params: Promise<{ id: st
   const handleDelete = async () => {
     try {
       await deleteMachine(id)
-      toast('Machine deleted')
+      toast('Product deleted')
       router.push('/machinery')
     } catch {
-      toast('Failed to delete machine', 'error')
+      toast('Failed to delete product', 'error')
     }
   }
 
@@ -209,7 +209,7 @@ export default function MachineDetailPage({ params }: { params: Promise<{ id: st
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-base">Machine Details</CardTitle>
+            <CardTitle className="text-base">Product Details</CardTitle>
             <DeleteItemButton label={machine.name} onDelete={handleDelete} />
           </CardHeader>
           <CardContent>

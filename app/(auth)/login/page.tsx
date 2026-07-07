@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginFormData } from '@/lib/validations/schemas'
@@ -11,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
+import { BrandLogo } from '@/components/layout/brand-logo'
 import { Eye, EyeOff } from 'lucide-react'
 
 export default function LoginPage() {
@@ -58,9 +58,11 @@ export default function LoginPage() {
     <Card className="w-full max-w-md animate-slide-up glass-panel glow-border">
       <CardContent className="p-8">
         <div className="mb-8 flex flex-col items-center text-center">
-          <Image src="/logo.png" alt="Haya Enterprises" width={160} height={48} className="mb-4 h-12 w-auto" priority />
+          <div className="mb-4">
+            <BrandLogo href={null} size="auth" />
+          </div>
           <h1 className="text-xl font-bold glow-text">Welcome Back</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Sign in to Haya Enterprises ERP</p>
+          <p className="mt-1 text-sm text-muted-foreground">Sign in to TawakkalTech ERP</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>

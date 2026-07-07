@@ -2,48 +2,17 @@ import type { NavItem } from '@/types'
 
 export const NAV_ITEMS: NavItem[] = [
   { title: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
-  {
-    title: 'Expenses',
-    href: '/expenses',
-    icon: 'Receipt',
-    permission: 'expenses.view',
-    children: [
-      { title: 'All Expenses', href: '/expenses' },
-      { title: 'Categories', href: '/expenses/categories' },
-      { title: 'Monthly Reports', href: '/expenses/reports' },
-    ],
-  },
-  {
-    title: 'Machinery',
-    href: '/machinery',
-    icon: 'Truck',
-    permission: 'machinery.view',
-    children: [
-      { title: 'All Machines', href: '/machinery' },
-      { title: 'Add Machine', href: '/machinery/new' },
-    ],
-  },
-  { title: 'Machine Costs', href: '/machine-costs', icon: 'Calculator', permission: 'machine-costs.view' },
-  { title: 'Machine Profit', href: '/machine-profit', icon: 'TrendingUp', permission: 'machine-profit.view' },
-  { title: 'Sales', href: '/sales', icon: 'ShoppingCart', permission: 'sales.view' },
-  { title: 'Partnerships', href: '/partnerships', icon: 'Handshake', permission: 'partnerships.view' },
-  {
-    title: 'Financial',
-    href: '/financial',
-    icon: 'Landmark',
-    permission: 'financial.view',
-    children: [
-      { title: 'Overview', href: '/financial' },
-      { title: 'Transactions', href: '/financial/transactions' },
-      { title: 'Bank Accounts', href: '/financial/bank-accounts' },
-      { title: 'Receivables', href: '/financial/receivables' },
-      { title: 'Payables', href: '/financial/payables' },
-    ],
-  },
-  { title: 'Reports', href: '/reports', icon: 'FileText', permission: 'reports.view' },
-  { title: 'Analytics', href: '/analytics', icon: 'BarChart3', permission: 'analytics.view' },
-  { title: 'Notifications', href: '/notifications', icon: 'Bell', permission: 'notifications.view' },
-  { title: 'Users & Roles', href: '/users', icon: 'Users', permission: 'users.view' },
+  { title: 'Sales', href: '/sales', icon: 'ShoppingCart' },
+  { title: 'Purchases', href: '/purchases', icon: 'Receipt' },
+  { title: 'Inventory', href: '/inventory', icon: 'Warehouse' },
+  { title: 'Customers', href: '/customers', icon: 'Users' },
+  { title: 'Suppliers', href: '/suppliers', icon: 'Handshake' },
+  { title: 'Expenses', href: '/expenses', icon: 'Receipt' },
+  { title: 'Accounting', href: '/accounting', icon: 'Landmark' },
+  { title: 'Cash & Bank', href: '/cash-bank', icon: 'Landmark' },
+  { title: 'Reports', href: '/reports', icon: 'FileText' },
+  { title: 'Settings', href: '/settings', icon: 'Settings' },
+  { title: 'Notifications', href: '/notifications', icon: 'Bell' },
 ]
 
 export const STATUS_COLORS: Record<string, string> = {

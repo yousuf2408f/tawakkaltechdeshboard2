@@ -27,13 +27,13 @@ export default function NewMachinePage() {
       const machine = await addMachine(data)
       router.push(`/machinery/${machine.id}`)
     } catch (error) {
-      toast(error instanceof Error ? error.message : 'Failed to save machine', 'error')
+      toast(error instanceof Error ? error.message : 'Failed to save product', 'error')
     }
   }
 
   const fields: { name: keyof MachineFormData; label: string; type?: string }[] = [
-    { name: 'name', label: 'Machine Name' },
-    { name: 'type', label: 'Machine Type' },
+    { name: 'name', label: 'Product Name' },
+    { name: 'type', label: 'Product Type' },
     { name: 'brand', label: 'Brand' },
     { name: 'model', label: 'Model' },
     { name: 'serialNumber', label: 'Serial Number' },
@@ -48,7 +48,7 @@ export default function NewMachinePage() {
 
   return (
     <div className="space-y-6 animate-slide-up">
-      <PageHeader title="Add Machine" description="Register new earth-moving equipment" />
+      <PageHeader title="Add Product" description="Register a new mobile phone or stock product" />
       <Card>
         <CardContent className="p-6">
           <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 sm:grid-cols-2">
@@ -71,7 +71,7 @@ export default function NewMachinePage() {
               </Select>
             </div>
             <div className="sm:col-span-2 flex gap-3 pt-4">
-              <Button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save Machine'}</Button>
+              <Button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save Product'}</Button>
               <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
             </div>
           </form>

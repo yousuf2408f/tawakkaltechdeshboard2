@@ -10,9 +10,9 @@ import {
   DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useTheme } from 'next-themes'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
+import { BrandLogo } from '@/components/layout/brand-logo'
 import type { Notification } from '@/types'
 
 interface TopNavbarProps {
@@ -68,13 +68,12 @@ export function TopNavbar({ onMenuClick, userName = 'Admin', userRole = 'ADMIN' 
       </Button>
 
       <div className="hidden sm:block">
-        {/* <Image src="/logo.png" alt="Haya" width={100} height={30} className="h-7 w-auto" /> */}
-        <h1 className="text-2xl font-bold text-danger"><span className="text-primary">Haya</span> <span className="text-dark">Enterprises</span></h1>
+        <BrandLogo href={null} size="navbar" />
       </div>
 
       <div className="relative ml-auto max-w-md flex-1 sm:max-w-xs lg:max-w-md">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input placeholder="Search machines, expenses, reports..." className="pl-9" />
+        <Input placeholder="Search products, expenses, reports..." className="pl-9" />
       </div>
 
       <div className="flex items-center gap-1 sm:gap-2">

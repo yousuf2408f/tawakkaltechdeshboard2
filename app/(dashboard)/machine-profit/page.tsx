@@ -83,7 +83,7 @@ export default function MachineProfitPage() {
     },
     {
       key: 'machineCost',
-      header: 'Machine Cost',
+      header: 'Operating Cost',
       sortable: true,
       render: (i: ProfitRow) => formatCurrency(i.machineCost),
     },
@@ -137,14 +137,14 @@ export default function MachineProfitPage() {
   return (
     <div className="space-y-6 animate-slide-up">
       <PageHeader
-        title="Machine Profit Analysis"
-        description="Profit = Selling Price − (Purchase Cost + Machine Cost)"
+        title="Product Profit Analysis"
+        description="Profit = Selling Price − (Purchase Cost + Operating Cost)"
         actions={
           <>
             <Button variant="outline" asChild>
               <Link href="/sales"><Plus className="mr-2 h-4 w-4" /> Add Sales</Link>
             </Button>
-            <Button variant="outline" onClick={() => exportToExcel(rows, 'machine-profit-report')}>
+            <Button variant="outline" onClick={() => exportToExcel(rows, 'product-profit-report')}>
               <Download className="mr-2 h-4 w-4" /> Export
             </Button>
           </>

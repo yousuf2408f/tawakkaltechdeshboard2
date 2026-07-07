@@ -1,15 +1,10 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
-/** Intrinsic dimensions of public/logo.png */
-const LOGO_WIDTH = 670
-const LOGO_HEIGHT = 477
-
 const sizeClasses = {
-  navbar: 'h-8 max-w-[104px] sm:h-9 sm:max-w-[118px] md:h-10 md:max-w-[132px]',
-  sidebar: 'h-9 max-w-[148px] sm:h-10 sm:max-w-[160px]',
-  auth: 'h-12 max-w-[180px] sm:h-14 sm:max-w-[200px]',
+  navbar: 'h-9 sm:h-10',
+  sidebar: 'h-10 sm:h-11',
+  auth: 'h-12 sm:h-14',
 } as const
 
 interface BrandLogoProps {
@@ -23,30 +18,34 @@ export function BrandLogo({
   href = '/dashboard',
   size = 'navbar',
   className,
-  priority = false,
 }: BrandLogoProps) {
-  const image = (
-    <Image
-      src="/logo.png"
-      alt="Haya Enterprises"
-      width={LOGO_WIDTH}
-      height={LOGO_HEIGHT}
-      priority={priority}
-      className={cn('w-auto shrink-0 object-contain object-left', sizeClasses[size], className)}
-    />
+  const mark = (
+    <div className={cn('flex shrink-0 items-center gap-2 py-1', sizeClasses[size], className)}>
+      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 via-amber-400 to-orange-600 text-base font-black uppercase tracking-[0.3em] text-white shadow-lg shadow-orange-500/20">
+        TT
+      </div>
+      <div className="flex flex-col leading-none">
+        <span className="text-[0.72rem] font-black uppercase tracking-[0.3em] text-foreground sm:text-sm">
+          Tawakkal
+        </span>
+        <span className="text-[0.62rem] font-semibold uppercase tracking-[0.35em] text-muted-foreground sm:text-xs">
+          Tech
+        </span>
+      </div>
+    </div>
   )
 
   if (href) {
     return (
       <Link
         href={href}
-        className="flex shrink-0 items-center py-1"
-        aria-label="Haya Enterprises — go to dashboard"
+        className="flex shrink-0 items-center"
+        aria-label="TawakkalTech — go to dashboard"
       >
-        {image}
+        {mark}
       </Link>
     )
   }
 
-  return <div className="flex shrink-0 items-center py-1">{image}</div>
+  return <div className="flex shrink-0 items-center">{mark}</div>
 }

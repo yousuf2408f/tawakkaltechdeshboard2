@@ -89,7 +89,7 @@ export default function PartnershipsPage() {
   if (!partnership) {
     return (
       <div className="space-y-6 animate-slide-up">
-        <PageHeader title="Partnership Management" description="Manage shared machine ownership and profit distribution" />
+        <PageHeader title="Partnership Management" description="Manage shared product ownership and profit distribution" />
         <p className="text-center text-muted-foreground py-12">No partnership records found.</p>
       </div>
     )
@@ -99,7 +99,7 @@ export default function PartnershipsPage() {
     <div className="space-y-6 animate-slide-up">
       <PageHeader
         title="Partnership Management"
-        description="Manage shared machine ownership and profit distribution"
+        description="Manage shared product ownership and profit distribution"
         actions={<Button variant="outline" onClick={() => exportToExcel(partners, 'partnership-report')}><Download className="mr-2 h-4 w-4" /> Export</Button>}
       />
 
@@ -124,7 +124,7 @@ export default function PartnershipsPage() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-4">
-            <div><p className="text-sm text-muted-foreground">Machine</p><p className="font-medium">{partnership.machineName}</p></div>
+            <div><p className="text-sm text-muted-foreground">Product</p><p className="font-medium">{partnership.machineName}</p></div>
             <div><p className="text-sm text-muted-foreground">Total Investment</p><p className="font-bold">{formatCurrency(partnership.totalInvestment)}</p></div>
             <div><p className="text-sm text-muted-foreground">Net Profit</p><p className="font-bold text-emerald-400">{formatCurrency(partnership.netProfit)}</p></div>
             <div><p className="text-sm text-muted-foreground">Total Revenue</p><p className="font-medium">{formatCurrency(partnership.totalRevenue)}</p></div>

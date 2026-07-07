@@ -126,7 +126,7 @@ export default function ExpensesPage() {
       const res = await fetch(`/api/expenses/${item.id}`, { method: 'DELETE' })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to delete expense')
-      setExpenses((prev) => prev.filter((e) => e.id !== item.id))
+      await fetchExpenses()
       toast('Expense deleted')
     } catch (error) {
       toast(error instanceof Error ? error.message : 'Failed to delete expense', 'error')
@@ -231,7 +231,7 @@ export default function ExpensesPage() {
                   id="expense-description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="e.g. Diesel refill - Site A fleet"
+                  placeholder="e.g. Mobile accessories restock"
                   autoFocus
                 />
               </div>

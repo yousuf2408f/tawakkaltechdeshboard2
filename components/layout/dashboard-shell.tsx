@@ -17,8 +17,8 @@ export function DashboardShell({ children, userName, userRole }: DashboardShellP
   return (
     <div className="relative min-h-screen bg-background dashboard-grid-bg">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -left-40 top-0 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />
-        <div className="absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-violet-500/10 blur-3xl" />
+        <div className="absolute -left-40 top-0 h-96 w-96 rounded-full bg-orange-500/10 blur-3xl" />
+        <div className="absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-orange-500/10 blur-3xl" />
       </div>
       <Sidebar
         open={sidebarOpen}

@@ -65,8 +65,8 @@ export function MachineryProvider({ children }: { children: React.ReactNode }) {
     const res = await fetch(`/api/machines/${id}`, { method: 'DELETE' })
     const result = await res.json()
     if (!res.ok) throw new Error(result.error ?? 'Failed to delete machine')
-    setMachines((prev) => prev.filter((m) => m.id !== id))
-  }, [])
+    await refreshMachines()
+  }, [refreshMachines])
 
   const updateMachineCosts = useCallback(
     async (id: string, operatingCosts: number, salesExpenses: number): Promise<Machine> => {

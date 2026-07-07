@@ -86,30 +86,30 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <PageHeader
         title="Dashboard"
-        description="Overview of Haya Enterprises operations and financial performance"
+        description="Overview of TawakkalTech operations and financial performance"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard title="Total Revenue" value={stats.totalRevenue} change={stats.revenueChange} format="currency" icon={<DollarSign className="h-5 w-5" />} variant="success" />
         <StatCard title="Total Expenses" value={stats.totalExpenses} change={stats.expensesChange} format="currency" icon={<TrendingDown className="h-5 w-5" />} variant="danger" />
         <StatCard title="Total Profit" value={stats.totalProfit} change={stats.profitChange} format="currency" icon={<TrendingUp className="h-5 w-5" />} variant="success" />
-        <StatCard title="Machinery Value" value={stats.totalMachineryValue} format="currency" icon={<HardHat className="h-5 w-5" />} variant="info" />
+        <StatCard title="Total Product Value" value={stats.totalMachineryValue} format="currency" icon={<HardHat className="h-5 w-5" />} variant="info" />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Active Machines" value={stats.activeMachines} format="number" icon={<Activity className="h-5 w-5 text-emerald-600" />} />
-        <StatCard title="Idle Machines" value={stats.idleMachines} format="number" icon={<PauseCircle className="h-5 w-5 text-amber-500" />} />
+        <StatCard title="Active Products" value={stats.activeMachines} format="number" icon={<Activity className="h-5 w-5 text-emerald-600" />} />
+        <StatCard title="Idle Products" value={stats.idleMachines} format="number" icon={<PauseCircle className="h-5 w-5 text-amber-500" />} />
         <StatCard title="Under Maintenance" value={stats.maintenanceMachines} format="number" icon={<Wrench className="h-5 w-5 text-orange-500" />} />
-        <StatCard title="Partnership Machines" value={stats.partnershipMachines} format="number" icon={<Handshake className="h-5 w-5 text-blue-600" />} />
+        <StatCard title="Partnership Products" value={stats.partnershipMachines} format="number" icon={<Handshake className="h-5 w-5 text-blue-600" />} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <CashFlowChart data={monthlyCashFlow} />
-        <ExpenseBreakdownChart data={expenseBreakdown.length > 0 ? expenseBreakdown : [{ name: 'No data', value: 0 }]} />
+        <ExpenseBreakdownChart data={expenseBreakdown} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <UtilizationChart data={machineUtilization.length > 0 ? machineUtilization : [{ name: 'No machines', value: 0 }]} />
+        <UtilizationChart data={machineUtilization} />
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="text-base">Profit & Loss Summary</CardTitle>

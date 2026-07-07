@@ -46,10 +46,10 @@ export default function MachineCostsPage() {
 
   return (
     <div className="space-y-6 animate-slide-up">
-      <PageHeader title="Machine Cost Tracking" description="Enter operating costs and expenses manually per machine" />
+      <PageHeader title="Product Cost Tracking" description="Enter operating costs and expenses manually per product" />
 
       <Select value={selectedId} onValueChange={setSelectedId}>
-        <SelectTrigger className="max-w-sm"><SelectValue placeholder="Select machine" /></SelectTrigger>
+        <SelectTrigger className="max-w-sm"><SelectValue placeholder="Select product" /></SelectTrigger>
         <SelectContent>
           {machines.map((m) => <SelectItem key={m.id} value={m.id}>{m.name}</SelectItem>)}
         </SelectContent>
@@ -87,7 +87,7 @@ export default function MachineCostsPage() {
           </Card>
 
           <div className="grid gap-4 sm:grid-cols-3">
-            <Card><CardContent className="p-5"><p className="text-sm text-muted-foreground">Total Machine Cost</p><p className="text-2xl font-bold">{formatCurrency(costs.totalCost)}</p></CardContent></Card>
+            <Card><CardContent className="p-5"><p className="text-sm text-muted-foreground">Total Product Cost</p><p className="text-2xl font-bold">{formatCurrency(costs.totalCost)}</p></CardContent></Card>
             <Card><CardContent className="p-5"><p className="text-sm text-muted-foreground">Cost Per Month</p><p className="text-2xl font-bold">{formatCurrency(costs.costPerMonth)}</p></CardContent></Card>
             <Card><CardContent className="p-5"><p className="text-sm text-muted-foreground">Cost Per Working Hour</p><p className="text-2xl font-bold">{formatCurrency(costs.costPerWorkingHour)}</p></CardContent></Card>
           </div>

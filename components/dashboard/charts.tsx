@@ -102,7 +102,7 @@ interface UtilizationChartProps {
 
 export function UtilizationChart({ data }: UtilizationChartProps) {
   return (
-    <ChartCard title="Machine Utilization" description="Utilization rate by machine (%)">
+    <ChartCard title="Product Utilization" description="Utilization rate by product (%)">
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data} layout="vertical">
           <CartesianGrid strokeDasharray="3 3" className="stroke-border" />

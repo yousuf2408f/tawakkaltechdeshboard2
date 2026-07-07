@@ -24,9 +24,9 @@ export default function MachineryPage() {
     setDeletingId(machine.id)
     try {
       await deleteMachine(machine.id)
-      toast('Machine deleted')
+      toast('Product deleted')
     } catch {
-      toast('Failed to delete machine', 'error')
+      toast('Failed to delete product', 'error')
     } finally {
       setDeletingId(null)
     }
@@ -35,7 +35,7 @@ export default function MachineryPage() {
   const columns = [
     {
       key: 'name',
-      header: 'Machine',
+      header: 'Product',
       sortable: true,
       render: (item: Machine) => (
         <Link href={`/machinery/${item.id}`} className="font-medium text-primary hover:underline">
@@ -94,20 +94,20 @@ export default function MachineryPage() {
   return (
     <div className="space-y-6 animate-slide-up">
       <PageHeader
-        title="Machinery Management"
-        description="Manage earth-moving equipment fleet"
+        title="Product Management"
+        description="Manage mobile phones and product stock items"
         actions={
           <>
-            <Button variant="outline" onClick={() => exportToExcel(machines, 'machinery-fleet')}>
+            <Button variant="outline" onClick={() => exportToExcel(machines, 'product-inventory')}>
               <Download className="mr-2 h-4 w-4" /> Export
             </Button>
             <Link href="/machinery/new">
-              <Button><Plus className="mr-2 h-4 w-4" /> Add Machine</Button>
+              <Button><Plus className="mr-2 h-4 w-4" /> Add Product</Button>
             </Link>
           </>
         }
       />
-      <DataTable data={machines} columns={columns} searchKey="name" searchPlaceholder="Search machines..." />
+      <DataTable data={machines} columns={columns} searchKey="name" searchPlaceholder="Search products..." />
     </div>
   )
 }

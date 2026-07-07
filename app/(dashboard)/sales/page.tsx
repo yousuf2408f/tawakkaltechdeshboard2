@@ -25,7 +25,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useToast } from '@/components/providers/toast-provider'
-import { useMachinery } from '@/components/providers/machinery-provider'
+import { DEFAULT_INVENTORY_ITEMS, INVENTORY_STORAGE_KEY, readInventoryItems } from '@/lib/constants/inventory'
+import { usePersistedRecords } from '@/lib/hooks/use-persisted-records'
 import { calculateSalesProfit } from '@/lib/sales/calculations'
 import { formatCurrency, cn } from '@/lib/utils'
 import type { SalesRecord } from '@/lib/services/sales-service'
@@ -34,14 +35,17 @@ type DialogMode = 'add' | 'edit' | null
 
 export default function SalesPage() {
   const { toast } = useToast()
-  const { machines, refreshMachines } = useMachinery()
+  const [inventoryProducts, , , reloadInventory] = usePersistedRecords(
+    INVENTORY_STORAGE_KEY,
+    DEFAULT_INVENTORY_ITEMS,
+  )
   const [sales, setSales] = useState<SalesRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [dialogMode, setDialogMode] = useState<DialogMode>(null)
   const [editingSale, setEditingSale] = useState<SalesRecord | null>(null)
-  const [selectedMachineId, setSelectedMachineId] = useState('')
+  const [selectedProductId, setSelectedProductId] = useState('')
   const [itemName, setItemName] = useState('')
   const [purchaseCost, setPurchaseCost] = useState('')
   const [machineCost, setMachineCost] = useState('')
@@ -66,24 +70,22 @@ export default function SalesPage() {
     fetchSales()
   }, [fetchSales])
 
-  const availableMachines = useMemo(
-    () => machines.filter((m) => m.status !== 'SOLD'),
-    [machines],
+  const availableProducts = useMemo(
+    () => inventoryProducts.filter((product) => product.stock > 0),
+    [inventoryProducts],
   )
 
-  const applyMachineSelection = (machineId: string) => {
-    const machine = machines.find((m) => m.id === machineId)
-    if (!machine) return
-    setSelectedMachineId(machineId)
-    setItemName(machine.name)
-    setPurchaseCost(String(machine.purchaseCost))
-    setMachineCost(String((machine.operatingCosts ?? 0) + (machine.salesExpenses ?? 0)))
+  const applyProductSelection = (productId: string) => {
+    const product = inventoryProducts.find((item) => item.id === productId)
+    if (!product) return
+    setSelectedProductId(productId)
+    setItemName(product.name)
   }
 
-  const openAddDialog = async () => {
-    await refreshMachines()
+  const openAddDialog = () => {
+    reloadInventory()
     setEditingSale(null)
-    setSelectedMachineId('')
+    setSelectedProductId('')
     setItemName('')
     setPurchaseCost('')
     setMachineCost('')
@@ -92,11 +94,12 @@ export default function SalesPage() {
     setDialogMode('add')
   }
 
-  const openEditDialog = async (sale: SalesRecord) => {
-    const latestMachines = await refreshMachines()
+  const openEditDialog = (sale: SalesRecord) => {
+    reloadInventory()
+    const products = readInventoryItems()
     setEditingSale(sale)
-    const matched = latestMachines.find((m) => m.name === sale.itemName)
-    setSelectedMachineId(matched?.id ?? '')
+    const matched = products.find((item) => item.name === sale.itemName)
+    setSelectedProductId(matched?.id ?? '')
     setItemName(sale.itemName)
     setPurchaseCost(String(sale.purchaseCost))
     setMachineCost(String(sale.machineCost))
@@ -108,7 +111,7 @@ export default function SalesPage() {
   const closeDialog = () => {
     setDialogMode(null)
     setEditingSale(null)
-    setSelectedMachineId('')
+    setSelectedProductId('')
     setFormError('')
   }
 
@@ -122,8 +125,8 @@ export default function SalesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!selectedMachineId && !itemName.trim()) {
-      setFormError('Please select a machine from Machinery Management')
+    if (!selectedProductId && !itemName.trim()) {
+      setFormError('Please select a product from Inventory')
       return
     }
     if (!itemName.trim()) {
@@ -179,7 +182,7 @@ export default function SalesPage() {
       const res = await fetch(`/api/sales/${sale.id}`, { method: 'DELETE' })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to delete sale')
-      setSales((prev) => prev.filter((s) => s.id !== sale.id))
+      await fetchSales()
       toast('Sale deleted successfully')
     } catch (error) {
       toast(error instanceof Error ? error.message : 'Failed to delete sale', 'error')
@@ -198,7 +201,7 @@ export default function SalesPage() {
     },
     {
       key: 'machineCost',
-      header: 'Machine Cost',
+      header: 'Operating Cost',
       sortable: true,
       render: (s: SalesRecord) => formatCurrency(s.machineCost),
     },
@@ -242,10 +245,10 @@ export default function SalesPage() {
     <div className="space-y-6 animate-slide-up">
       <PageHeader
         title="Sales"
-        description="Track sales, machine costs, and profit per item"
+        description="Track sales, product costs, and profit per item"
         actions={
           <Button onClick={openAddDialog}>
-            <Plus className="mr-2 h-4 w-4" /> Add Sales
+            <Plus className="mr-2 h-4 w-4" /> Add Product Sale
           </Button>
         }
       />
@@ -253,7 +256,7 @@ export default function SalesPage() {
       <div className="grid gap-4 sm:grid-cols-3">
         <Card><CardContent className="p-5"><p className="text-sm text-muted-foreground">Total Sales Records</p><p className="text-2xl font-bold">{sales.length}</p></CardContent></Card>
         <Card><CardContent className="p-5"><p className="text-sm text-muted-foreground">Total Profit</p><p className={cn('text-2xl font-bold', totalProfit >= 0 ? 'text-emerald-400' : 'text-rose-400')}>{formatCurrency(totalProfit)}</p></CardContent></Card>
-        <Card><CardContent className="p-5"><p className="text-sm text-muted-foreground">Formula</p><p className="text-sm font-medium mt-1">Profit = Selling Price − (Purchase + Machine Cost)</p></CardContent></Card>
+        <Card><CardContent className="p-5"><p className="text-sm text-muted-foreground">Formula</p><p className="text-sm font-medium mt-1">Profit = Selling Price − (Purchase + Operating Cost)</p></CardContent></Card>
       </div>
 
       {loading ? (
@@ -261,16 +264,16 @@ export default function SalesPage() {
           <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Loading sales...
         </div>
       ) : (
-        <DataTable data={sales} columns={columns} searchKey="itemName" searchPlaceholder="Search sales..." emptyMessage="No sales records yet. Click Add Sales to create one." />
+        <DataTable data={sales} columns={columns} searchKey="itemName" searchPlaceholder="Search product sales..." emptyMessage="No sales records yet. Click Add Product Sale to create one." />
       )}
 
       <Dialog open={dialogMode !== null} onOpenChange={(open) => !open && closeDialog()}>
         <DialogContent>
           <form onSubmit={handleSubmit}>
             <DialogHeader>
-              <DialogTitle>{dialogMode === 'add' ? 'Add Sales Record' : 'Edit Sales Record'}</DialogTitle>
+              <DialogTitle>{dialogMode === 'add' ? 'Add Product Sale' : 'Edit Product Sale'}</DialogTitle>
               <DialogDescription>
-                Profit is calculated automatically: Selling Price − (Purchase Cost + Machine Cost)
+                Profit is calculated automatically: Selling Price − (Purchase Cost + Operating Cost)
               </DialogDescription>
             </DialogHeader>
 
@@ -280,22 +283,22 @@ export default function SalesPage() {
               )}
               <div className="space-y-2">
                 <Label htmlFor="itemName">Product / Item Name *</Label>
-                {availableMachines.length === 0 ? (
+                {availableProducts.length === 0 ? (
                   <p className="rounded-lg border border-dashed px-3 py-2 text-sm text-muted-foreground">
-                    No machines available. Add a machine in Machinery Management first.
+                    No products available. Add a product in Inventory first.
                   </p>
                 ) : (
                   <Select
-                    value={selectedMachineId}
-                    onValueChange={applyMachineSelection}
+                    value={selectedProductId}
+                    onValueChange={applyProductSelection}
                   >
                     <SelectTrigger id="itemName">
-                      <SelectValue placeholder="Select a machine" />
+                      <SelectValue placeholder="Select a product" />
                     </SelectTrigger>
                     <SelectContent>
-                      {availableMachines.map((machine) => (
-                        <SelectItem key={machine.id} value={machine.id}>
-                          {machine.name}
+                      {availableProducts.map((product) => (
+                        <SelectItem key={product.id} value={product.id}>
+                          {product.name} (Stock: {product.stock})
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -313,7 +316,7 @@ export default function SalesPage() {
                   <Input id="purchaseCost" type="number" min="0" value={purchaseCost} onChange={(e) => setPurchaseCost(e.target.value)} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="machineCost">Machine Cost (PKR)</Label>
+                  <Label htmlFor="machineCost">Operating Cost (PKR)</Label>
                   <Input id="machineCost" type="number" min="0" value={machineCost} onChange={(e) => setMachineCost(e.target.value)} />
                 </div>
                 <div className="space-y-2">
@@ -334,7 +337,7 @@ export default function SalesPage() {
             <DialogFooter>
               <Button type="button" variant="outline" onClick={closeDialog} disabled={submitting}>Cancel</Button>
               <Button type="submit" disabled={submitting}>
-                {submitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Saving...</> : dialogMode === 'add' ? 'Add Sales' : 'Save Changes'}
+                {submitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Saving...</> : dialogMode === 'add' ? 'Add Product Sale' : 'Save Changes'}
               </Button>
             </DialogFooter>
           </form>
