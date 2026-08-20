@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 export default function SettingsPage() {
-  const [company, setCompany] = useState('TawakkalTech')
-  const [contact, setContact] = useState('admin@tawakkaltech.com')
+  const [company, setCompany] = useState('Cell Craft')
+  const [contact, setContact] = useState('admin@cellcraft.com')
 
   const save = () => {
     // simple client-side save (could call API)

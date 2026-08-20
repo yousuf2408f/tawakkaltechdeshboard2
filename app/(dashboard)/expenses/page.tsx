@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { EXPENSE_CATEGORIES } from '@/lib/data/mock-data'
+import { EXPENSE_CATEGORIES, shortCategoryName } from '@/lib/data/mock-data'
 import { useToast } from '@/components/providers/toast-provider'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { exportToExcel } from '@/lib/export'
@@ -38,7 +38,7 @@ export default function ExpensesPage() {
   const [submitting, setSubmitting] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [category, setCategory] = useState<ExpenseCategory>('GENERAL')
+  const [category, setCategory] = useState<ExpenseCategory>('ALL_PRODUCTS')
   const [amount, setAmount] = useState('')
   const [date, setDate] = useState(() => new Date().toISOString().split('T')[0])
   const [description, setDescription] = useState('')
@@ -63,7 +63,7 @@ export default function ExpensesPage() {
   }, [fetchExpenses])
 
   const openAddDialog = () => {
-    setCategory('GENERAL')
+    setCategory('ALL_PRODUCTS')
     setAmount('')
     setDate(new Date().toISOString().split('T')[0])
     setDescription('')
@@ -138,7 +138,7 @@ export default function ExpensesPage() {
   const columns = [
     { key: 'date', header: 'Date', sortable: true, render: (item: Expense) => formatDate(item.date) },
     { key: 'category', header: 'Category', sortable: true, render: (item: Expense) => (
-      <Badge variant="outline" className="font-normal">{item.category.replace(/_/g, ' ')}</Badge>
+      <Badge variant="outline" className="font-normal">{EXPENSE_CATEGORIES.find((c) => c.key === item.category)?.label ?? item.category.replace(/_/g, ' ')}</Badge>
     )},
     { key: 'description', header: 'Description', sortable: true },
     { key: 'amount', header: 'Amount', sortable: true, render: (item: Expense) => (
@@ -179,7 +179,7 @@ export default function ExpensesPage() {
           <TabsList>
             <TabsTrigger value="all">All Expenses</TabsTrigger>
             {EXPENSE_CATEGORIES.slice(0, 5).map((cat) => (
-              <TabsTrigger key={cat.key} value={cat.key}>{cat.label.split(' ')[0]}</TabsTrigger>
+              <TabsTrigger key={cat.key} value={cat.key}>{shortCategoryName(cat.label)}</TabsTrigger>
             ))}
           </TabsList>
           <TabsContent value="all">

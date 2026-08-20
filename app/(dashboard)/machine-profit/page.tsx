@@ -13,7 +13,6 @@ import { calculateProfitMargin } from '@/lib/sales/calculations'
 import { formatCurrency, cn } from '@/lib/utils'
 import { exportToExcel } from '@/lib/export'
 import { ProfitTrendChart } from '@/components/dashboard/charts'
-import { mockMonthlyCashFlow } from '@/lib/data/mock-data'
 import type { SalesRecord } from '@/lib/services/sales-service'
 
 type ProfitRow = SalesRecord & {
@@ -176,7 +175,7 @@ export default function MachineProfitPage() {
             </div>
           )}
 
-          <ProfitTrendChart data={mockMonthlyCashFlow} />
+          <ProfitTrendChart data={[]} />
           <DataTable
             data={rows}
             columns={columns}

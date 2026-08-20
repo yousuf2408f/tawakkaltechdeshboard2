@@ -20,14 +20,14 @@ async function main() {
   await prisma.user.deleteMany()
 
   const passwordHash = await bcrypt.hash(
-    process.env.DEMO_PASSWORD ?? 'tawakkaltech123',
+    process.env.DEMO_PASSWORD ?? 'cellcraft123',
     10,
   )
 
   await prisma.user.create({
     data: {
-      username: process.env.DEMO_USERNAME ?? 'admintawakkaltech',
-      email: 'admin@tawakkaltech.com',
+      username: process.env.DEMO_USERNAME ?? 'admincellcraft',
+      email: 'admin@cellcraft.com',
       password: passwordHash,
       name: 'Admin',
       role: 'ADMIN',
@@ -35,16 +35,16 @@ async function main() {
   })
 
   const categories = [
-    { key: 'GENERAL', label: 'General Expenses' },
-    { key: 'YARD', label: 'Warehouse Expenses' },
-    { key: 'MACHINERY', label: 'Product Equipment Expenses' },
-    { key: 'FUEL', label: 'Inventory Restock Expenses' },
-    { key: 'MAINTENANCE', label: 'Maintenance Expenses' },
-    { key: 'STAFF_SALARIES', label: 'Staff Salaries' },
-    { key: 'TRANSPORTATION', label: 'Transportation' },
-    { key: 'SPARE_PARTS', label: 'Spare Parts' },
-    { key: 'UTILITIES', label: 'Utilities' },
-    { key: 'OTHER', label: 'Other Expenses' },
+    { key: 'ALL_PRODUCTS', label: '📱 All Products' },
+    { key: 'SMARTPHONES', label: '📱 Smartphones' },
+    { key: 'EARBUDS_HEADPHONES', label: '🎧 Earbuds & Headphones' },
+    { key: 'SMARTWATCHES', label: '⌚ Smartwatches' },
+    { key: 'CHARGERS_POWER_BANKS', label: '🔋 Chargers & Power Banks' },
+    { key: 'CABLES_ADAPTERS', label: '🔌 Cables & Adapters' },
+    { key: 'CASES_PROTECTORS', label: '🛡️ Cases & Screen Protectors' },
+    { key: 'MEMORY_USB_DRIVES', label: '💾 Memory Cards & USB Drives' },
+    { key: 'SPARE_PARTS', label: '🛠️ Spare Parts' },
+    { key: 'OTHER_ACCESSORIES', label: '📦 Other Accessories' },
   ]
   await prisma.expenseCategoryConfig.createMany({ data: categories })
 

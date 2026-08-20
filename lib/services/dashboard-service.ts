@@ -1,6 +1,6 @@
 import type { ChartDataPoint, DashboardStats } from '@/types'
 import { toNumber } from '@/lib/db/serialize'
-import { EXPENSE_CATEGORIES } from '@/lib/data/mock-data'
+import { EXPENSE_CATEGORIES, shortCategoryName } from '@/lib/data/mock-data'
 import { prisma } from '@/lib/prisma'
 
 const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -145,7 +145,7 @@ export async function getDashboardData(): Promise<DashboardData> {
   }
 
   const expenseBreakdown: ChartDataPoint[] = EXPENSE_CATEGORIES.map((cat) => ({
-    name: cat.label.split(' ')[0],
+    name: shortCategoryName(cat.label),
     value: categoryTotals.get(cat.key) ?? 0,
   })).filter((row) => (row.value ?? 0) > 0)
 

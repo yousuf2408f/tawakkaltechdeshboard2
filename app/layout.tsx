@@ -6,7 +6,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
-  title: 'TawakkalTech ERP',
+  title: 'Cell Craft ERP',
   description: 'Earth-moving equipment management system',
 }
 

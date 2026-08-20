@@ -26,16 +26,16 @@ enum MachineStatus {
 }
 
 enum ExpenseCategory {
-  GENERAL
-  YARD
-  MACHINERY
-  FUEL
-  MAINTENANCE
-  STAFF_SALARIES
-  TRANSPORTATION
+  ALL_PRODUCTS
+  SMARTPHONES
+  EARBUDS_HEADPHONES
+  SMARTWATCHES
+  CHARGERS_POWER_BANKS
+  CABLES_ADAPTERS
+  CASES_PROTECTORS
+  MEMORY_USB_DRIVES
   SPARE_PARTS
-  UTILITIES
-  OTHER
+  OTHER_ACCESSORIES
 }
 
 enum TransactionType {
@@ -53,16 +53,17 @@ enum NotificationType {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  username  String   @unique
-  email     String   @unique
-  password  String
-  name      String
-  role      UserRole @default(OPERATOR)
-  avatar    String?
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  password     String
+  name         String
+  role         UserRole @default(OPERATOR)
+  avatar       String?
+  active       Boolean  @default(true)
+  tokenVersion Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   notifications Notification[]
   auditLogs     AuditLog[]
@@ -302,4 +303,53 @@ model MonthlyReportExclusion {
   monthKey   String   @unique
   reportType String   @default("expense_monthly")
   createdAt  DateTime @default(now())
+}
+
+model Purchase {
+  id        String   @id @default(cuid())
+  name      String
+  qty       Int
+  price     Decimal  @db.Decimal(14, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id        String   @id @default(cuid())
+  name      String
+  stock     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Supplier {
+  id        String   @id @default(cuid())
+  name      String
+  contact   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CashBankAccount {
+  id        String   @id @default(cuid())
+  name      String
+  balance   Decimal  @db.Decimal(14, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AccountingEntry {
+  id        String   @id @default(cuid())
+  desc      String
+  amount    Decimal  @db.Decimal(14, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

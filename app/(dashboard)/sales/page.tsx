@@ -25,20 +25,21 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useToast } from '@/components/providers/toast-provider'
-import { DEFAULT_INVENTORY_ITEMS, INVENTORY_STORAGE_KEY, readInventoryItems } from '@/lib/constants/inventory'
-import { usePersistedRecords } from '@/lib/hooks/use-persisted-records'
 import { calculateSalesProfit } from '@/lib/sales/calculations'
 import { formatCurrency, cn } from '@/lib/utils'
 import type { SalesRecord } from '@/lib/services/sales-service'
 
 type DialogMode = 'add' | 'edit' | null
 
+type ProductOption = {
+  id: string
+  name: string
+  stock: number
+}
+
 export default function SalesPage() {
   const { toast } = useToast()
-  const [inventoryProducts, , , reloadInventory] = usePersistedRecords(
-    INVENTORY_STORAGE_KEY,
-    DEFAULT_INVENTORY_ITEMS,
-  )
+  const [products, setProducts] = useState<ProductOption[]>([])
   const [sales, setSales] = useState<SalesRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
@@ -66,24 +67,38 @@ export default function SalesPage() {
     }
   }, [toast])
 
+  const loadProducts = useCallback(async () => {
+    try {
+      const res = await fetch('/api/products', { cache: 'no-store' })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? 'Failed to load products')
+      setProducts(data.products ?? [])
+      return data.products ?? []
+    } catch (error) {
+      toast(error instanceof Error ? error.message : 'Failed to load products', 'error')
+      return []
+    }
+  }, [toast])
+
   useEffect(() => {
     fetchSales()
-  }, [fetchSales])
+    loadProducts()
+  }, [fetchSales, loadProducts])
 
   const availableProducts = useMemo(
-    () => inventoryProducts.filter((product) => product.stock > 0),
-    [inventoryProducts],
+    () => products.filter((product) => product.stock > 0),
+    [products],
   )
 
   const applyProductSelection = (productId: string) => {
-    const product = inventoryProducts.find((item) => item.id === productId)
+    const product = products.find((item) => item.id === productId)
     if (!product) return
     setSelectedProductId(productId)
     setItemName(product.name)
   }
 
   const openAddDialog = () => {
-    reloadInventory()
+    loadProducts()
     setEditingSale(null)
     setSelectedProductId('')
     setItemName('')
@@ -94,11 +109,10 @@ export default function SalesPage() {
     setDialogMode('add')
   }
 
-  const openEditDialog = (sale: SalesRecord) => {
-    reloadInventory()
-    const products = readInventoryItems()
+  const openEditDialog = async (sale: SalesRecord) => {
+    const list = await loadProducts()
     setEditingSale(sale)
-    const matched = products.find((item) => item.name === sale.itemName)
+    const matched = list.find((item: ProductOption) => item.name === sale.itemName)
     setSelectedProductId(matched?.id ?? '')
     setItemName(sale.itemName)
     setPurchaseCost(String(sale.purchaseCost))
@@ -126,7 +140,7 @@ export default function SalesPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!selectedProductId && !itemName.trim()) {
-      setFormError('Please select a product from Inventory')
+      setFormError('Please select a product from Stock')
       return
     }
     if (!itemName.trim()) {
@@ -285,7 +299,7 @@ export default function SalesPage() {
                 <Label htmlFor="itemName">Product / Item Name *</Label>
                 {availableProducts.length === 0 ? (
                   <p className="rounded-lg border border-dashed px-3 py-2 text-sm text-muted-foreground">
-                    No products available. Add a product in Inventory first.
+                    No products available. Add a product in Stock first.
                   </p>
                 ) : (
                   <Select

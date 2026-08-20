@@ -1,26 +1,52 @@
- 'use client'
+'use client'
 
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PageHeader } from '@/components/dashboard/page-header'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Package, Plus, Save } from 'lucide-react'
-import { DEFAULT_INVENTORY_ITEMS, INVENTORY_STORAGE_KEY } from '@/lib/constants/inventory'
-import { usePersistedRecords } from '@/lib/hooks/use-persisted-records'
+
+type ProductItem = {
+  id: string
+  name: string
+  stock: number
+}
 
 export default function InventoryPage() {
-  const [items, setItems, ready] = usePersistedRecords(INVENTORY_STORAGE_KEY, DEFAULT_INVENTORY_ITEMS)
-  const [editing, setEditing] = useState<{ id: string; name: string; stock: number } | null>(null)
+  const [items, setItems] = useState<ProductItem[]>([])
+  const [ready, setReady] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [editing, setEditing] = useState<ProductItem | null>(null)
   const [name, setName] = useState('')
   const [stock, setStock] = useState('')
   const [formError, setFormError] = useState('')
 
+  const load = useCallback(async () => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/products')
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? 'Failed to load products')
+      setItems(data.products ?? [])
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to load products')
+    } finally {
+      setLoading(false)
+      setReady(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    load()
+  }, [load])
+
   const totalStock = useMemo(() => items.reduce((sum, item) => sum + item.stock, 0), [items])
   const lowStockItems = useMemo(() => items.filter((item) => item.stock < 10).length, [items])
 
-  const save = () => {
+  const save = async () => {
     if (!name.trim()) {
       setFormError('Product name is required')
       return
@@ -31,17 +57,39 @@ export default function InventoryPage() {
     }
 
     setFormError('')
-    if (editing) {
-      setItems((s) => s.map((r) => r.id === editing.id ? { ...r, name: name.trim(), stock: Number(stock) } : r))
-    } else {
-      setItems((s) => [{ id: `i${Date.now()}`, name: name.trim(), stock: Number(stock) }, ...s])
+    setError('')
+    try {
+      const res = await fetch(editing ? `/api/products/${editing.id}` : '/api/products', {
+        method: editing ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name.trim(), stock: Number(stock) }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? 'Failed to save product')
+      await load()
+      setName('')
+      setStock('')
+      setEditing(null)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to save product')
     }
-    setName('')
-    setStock('')
-    setEditing(null)
   }
-  const del = (id: string) => setItems((s) => s.filter((r) => r.id !== id))
-  const edit = (row: { id: string; name: string; stock: number }) => {
+
+  const del = async (id: string) => {
+    setError('')
+    try {
+      const res = await fetch(`/api/products/${id}`, { method: 'DELETE' })
+      if (!res.ok) {
+        const data = await res.json().catch(() => null)
+        throw new Error(data?.error ?? 'Failed to delete product')
+      }
+      await load()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to delete product')
+    }
+  }
+
+  const edit = (row: ProductItem) => {
     setEditing(row)
     setName(row.name)
     setStock(String(row.stock))
@@ -50,7 +98,7 @@ export default function InventoryPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Inventory" description="Manage stock for mobile phones and accessories" />
+      <PageHeader title="Stock" description="Manage stock for mobile phones and accessories" />
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardContent className="p-5">
@@ -92,33 +140,40 @@ export default function InventoryPage() {
               {formError}
             </div>
           )}
+          {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
           {!ready ? null : (
-          <table className="w-full table-auto">
-            <thead>
-              <tr className="text-left text-sm text-muted-foreground">
-                <th className="pb-3">Product</th>
-                <th className="pb-3">Stock</th>
-                <th className="pb-3 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((r) => (
-                <tr key={r.id} className="border-t">
-                  <td className="py-3">
-                    <div className="flex items-center gap-2">
-                      <Package className="h-4 w-4 text-muted-foreground" />
-                      <span className="font-medium">{r.name}</span>
-                    </div>
-                  </td>
-                  <td className={r.stock < 10 ? 'font-semibold text-amber-500' : ''}>{r.stock}</td>
-                  <td className="space-x-2 text-right">
-                    <Button variant="outline" size="sm" onClick={() => edit(r)}>Edit</Button>
-                    <Button variant="destructive" size="sm" onClick={() => del(r.id)}>Delete</Button>
-                  </td>
+            <table className="w-full table-auto">
+              <thead>
+                <tr className="text-left text-sm text-muted-foreground">
+                  <th className="pb-3">Product</th>
+                  <th className="pb-3">Stock</th>
+                  <th className="pb-3 text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {loading && items.length === 0 ? (
+                  <tr><td colSpan={3} className="py-4 text-sm text-muted-foreground">Loading...</td></tr>
+                ) : items.length === 0 ? (
+                  <tr><td colSpan={3} className="py-4 text-sm text-muted-foreground">No products yet. Add your first product above.</td></tr>
+                ) : (
+                  items.map((r) => (
+                    <tr key={r.id} className="border-t">
+                      <td className="py-3">
+                        <div className="flex items-center gap-2">
+                          <Package className="h-4 w-4 text-muted-foreground" />
+                          <span className="font-medium">{r.name}</span>
+                        </div>
+                      </td>
+                      <td className={r.stock < 10 ? 'font-semibold text-amber-500' : ''}>{r.stock}</td>
+                      <td className="space-x-2 text-right">
+                        <Button variant="outline" size="sm" onClick={() => edit(r)}>Edit</Button>
+                        <Button variant="destructive" size="sm" onClick={() => del(r.id)}>Delete</Button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           )}
         </CardContent>
       </Card>

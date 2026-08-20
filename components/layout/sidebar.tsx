@@ -124,7 +124,7 @@ export function Sidebar({ open, collapsed, onClose, onToggleCollapse }: SidebarP
 
         {!collapsed && (
           <div className="border-t p-4">
-            <p className="text-xs text-muted-foreground">TawakkalTech ERP v1.0</p>
+            <p className="text-xs text-muted-foreground">Cell Craft ERP v1.0</p>
           </div>
         )}
       </aside>

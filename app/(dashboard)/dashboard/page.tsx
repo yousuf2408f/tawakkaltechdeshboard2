@@ -86,7 +86,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <PageHeader
         title="Dashboard"
-        description="Overview of TawakkalTech operations and financial performance"
+        description="Overview of Cell Craft operations and financial performance"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

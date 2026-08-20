@@ -1,7 +1,7 @@
 import type { ChartDataPoint } from '@/types'
 import { getHiddenMonthKeys, hideMonthKey } from '@/lib/db/monthly-report-exclusions'
 import { toNumber } from '@/lib/db/serialize'
-import { EXPENSE_CATEGORIES } from '@/lib/data/mock-data'
+import { EXPENSE_CATEGORIES, shortCategoryName } from '@/lib/data/mock-data'
 import { prisma } from '@/lib/prisma'
 
 const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -80,7 +80,7 @@ function buildExpenseBreakdown(
   }
 
   return EXPENSE_CATEGORIES.map((cat) => ({
-    name: cat.label.split(' ')[0],
+    name: shortCategoryName(cat.label),
     value: categoryTotals.get(cat.key) ?? 0,
   })).filter((row) => (row.value ?? 0) > 0)
 }

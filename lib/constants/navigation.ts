@@ -4,14 +4,13 @@ export const NAV_ITEMS: NavItem[] = [
   { title: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
   { title: 'Sales', href: '/sales', icon: 'ShoppingCart' },
   { title: 'Purchases', href: '/purchases', icon: 'Receipt' },
-  { title: 'Inventory', href: '/inventory', icon: 'Warehouse' },
+  { title: 'Stock', href: '/inventory', icon: 'Warehouse' },
   { title: 'Customers', href: '/customers', icon: 'Users' },
   { title: 'Suppliers', href: '/suppliers', icon: 'Handshake' },
   { title: 'Expenses', href: '/expenses', icon: 'Receipt' },
   { title: 'Accounting', href: '/accounting', icon: 'Landmark' },
   { title: 'Cash & Bank', href: '/cash-bank', icon: 'Landmark' },
   { title: 'Reports', href: '/reports', icon: 'FileText' },
-  { title: 'Settings', href: '/settings', icon: 'Settings' },
   { title: 'Notifications', href: '/notifications', icon: 'Bell' },
 ]
 

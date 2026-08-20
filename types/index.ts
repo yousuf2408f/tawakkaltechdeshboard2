@@ -9,16 +9,16 @@ export type UserRole =
 export type MachineStatus = 'ACTIVE' | 'IDLE' | 'MAINTENANCE' | 'PARTNERSHIP' | 'RETIRED' | 'SOLD'
 
 export type ExpenseCategory =
-  | 'GENERAL'
-  | 'YARD'
-  | 'MACHINERY'
-  | 'FUEL'
-  | 'MAINTENANCE'
-  | 'STAFF_SALARIES'
-  | 'TRANSPORTATION'
+  | 'ALL_PRODUCTS'
+  | 'SMARTPHONES'
+  | 'EARBUDS_HEADPHONES'
+  | 'SMARTWATCHES'
+  | 'CHARGERS_POWER_BANKS'
+  | 'CABLES_ADAPTERS'
+  | 'CASES_PROTECTORS'
+  | 'MEMORY_USB_DRIVES'
   | 'SPARE_PARTS'
-  | 'UTILITIES'
-  | 'OTHER'
+  | 'OTHER_ACCESSORIES'
 
 export interface User {
   id: string

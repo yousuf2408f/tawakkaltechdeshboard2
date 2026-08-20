@@ -1,14 +1,9 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { Search, Bell, Menu, Sun, Moon, LogOut, User, Settings } from 'lucide-react'
+import { Search, Bell, Menu, Sun, Moon, User } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
-  DropdownMenuSeparator, DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
@@ -22,9 +17,7 @@ interface TopNavbarProps {
 }
 
 export function TopNavbar({ onMenuClick, userName = 'Admin', userRole = 'ADMIN' }: TopNavbarProps) {
-  const router = useRouter()
   const { theme, setTheme } = useTheme()
-  const [loggingOut, setLoggingOut] = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
 
   const fetchUnreadCount = useCallback(async () => {
@@ -48,18 +41,6 @@ export function TopNavbar({ onMenuClick, userName = 'Admin', userRole = 'ADMIN' 
     window.addEventListener('focus', onFocus)
     return () => window.removeEventListener('focus', onFocus)
   }, [fetchUnreadCount])
-
-  const handleLogout = async () => {
-    setLoggingOut(true)
-    try {
-      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
-    } catch {
-      /* proceed with client cleanup */
-    } finally {
-      router.replace('/login')
-      router.refresh()
-    }
-  }
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-primary/10 bg-background/70 px-4 backdrop-blur-xl sm:px-6">
@@ -108,37 +89,6 @@ export function TopNavbar({ onMenuClick, userName = 'Admin', userRole = 'ADMIN' 
             <span className="text-sm font-medium leading-none">{userName}</span>
             <span className="text-xs text-muted-foreground">{userRole.replace('_', ' ')}</span>
           </div>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleLogout}
-            disabled={loggingOut}
-            className="border-primary/30 hover:border-primary/50"
-          >
-            <LogOut className="mr-1.5 h-4 w-4" />
-            <span className="hidden sm:inline">{loggingOut ? 'Logging out...' : 'Logout'}</span>
-          </Button>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
-                <User className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <div className="px-2 py-1.5">
-                <p className="text-sm font-medium">{userName}</p>
-                <p className="text-xs text-muted-foreground">{userRole.replace('_', ' ')}</p>
-              </div>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem><Settings className="mr-2 h-4 w-4" /> Settings</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="text-destructive">
-                <LogOut className="mr-2 h-4 w-4" /> Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
     </header>

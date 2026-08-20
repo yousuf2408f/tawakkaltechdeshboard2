@@ -22,14 +22,14 @@ export function BrandLogo({
   const mark = (
     <div className={cn('flex shrink-0 items-center gap-2 py-1', sizeClasses[size], className)}>
       <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 via-amber-400 to-orange-600 text-base font-black uppercase tracking-[0.3em] text-white shadow-lg shadow-orange-500/20">
-        TT
+        CC
       </div>
       <div className="flex flex-col leading-none">
         <span className="text-[0.72rem] font-black uppercase tracking-[0.3em] text-foreground sm:text-sm">
-          Tawakkal
+          Cell
         </span>
         <span className="text-[0.62rem] font-semibold uppercase tracking-[0.35em] text-muted-foreground sm:text-xs">
-          Tech
+          Craft
         </span>
       </div>
     </div>
@@ -40,7 +40,7 @@ export function BrandLogo({
       <Link
         href={href}
         className="flex shrink-0 items-center"
-        aria-label="TawakkalTech — go to dashboard"
+        aria-label="Cell Craft — go to dashboard"
       >
         {mark}
       </Link>

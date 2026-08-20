@@ -98,7 +98,7 @@ export async function getExpenseReport(): Promise<Expense[]> {
 
 export async function getMaintenanceReport(): Promise<Expense[]> {
   const expenses = await prisma.expense.findMany({
-    where: { category: 'MAINTENANCE' },
+    where: { category: 'SPARE_PARTS' },
     orderBy: { date: 'desc' },
   })
   return expenses.map(mapExpense)
